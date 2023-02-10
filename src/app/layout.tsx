@@ -1,5 +1,5 @@
 // Components
-import { Header } from '@/components';
+import { Footer, Header } from '@/components';
 // Theme Provider
 import Providers from './Providers';
 // Styles
@@ -16,13 +16,12 @@ export default function RootLayout({
       <body>
         <Providers>
           <div className='px-4 md:max-w-5xl mx-auto'>
-          {/* Header */}
             <Header />
             <main>
               {children}
             </main>
           </div>
-          {/* Footer */}
+          <Footer />
         </Providers>
       </body>
     </html>
