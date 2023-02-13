@@ -1,17 +1,44 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
+import Link from "next/link";
+import { useState } from "react";
+// Auth
+import { useSession } from "next-auth/react";
+// Firebase
+import { arrayUnion, updateDoc , doc, setDoc } from "firebase/firestore";
+import { db } from "@/firebase";
 // Icons
 import { StarIcon } from "@heroicons/react/24/outline";
-import Link from "next/link";
 // Sparkline
 import { Sparklines, SparklinesLine } from 'react-sparklines';
 
 const CoinItem = ({ topCoin } : any) => {
+  const { data: session } = useSession();
+    const [savedCoin, setSavedCoin] = useState(false);
+
+    const path = doc(db, 'users', `${session?.user?.email!}`);
+
+    const saveCoin = async () => {
+        setSavedCoin(true);
+        if(session?.user?.email!){
+            await updateDoc(path, {
+                watchList: arrayUnion({
+                    id: topCoin.id,
+                    name: topCoin.name,
+                    image: topCoin.image,
+                    rank: topCoin.market_cap_rank,
+                    symbol: topCoin.symbol,
+                })
+            }); 
+        } else {
+            alert('Please sign in to save a coin.');
+        }
+    }
+
   return (
     <tr className='h-[80px] border-b overflow-hidden'>
-        
-            <td><StarIcon className='h-4 w-4'/></td>
-            <td>{topCoin.market_cap_rank}</td>
+            <td><StarIcon onClick={saveCoin} className={savedCoin ? 'h-4 w-4 cursor-pointer fill-yellow-500' : 'h-4 w-4 cursor-pointer'}/></td>
+            <td className='text-center'>{topCoin.market_cap_rank}</td>
             <td>
                 <div className='flex items-center'>
                     <img 
@@ -19,8 +46,8 @@ const CoinItem = ({ topCoin } : any) => {
                         alt={topCoin.id} 
                         className='w-6 mr-2 rounded-full'
                     />
-                    <Link href={`/coin/${topCoin.name}`}>
-                    <p className='hidden sm:table-cell'>{topCoin.name}</p>
+                    <Link href={`/coin/${topCoin.id}`}>
+                        <p className='hidden sm:table-cell'>{topCoin.name}</p>
                     </Link>
                 </div>
             </td>

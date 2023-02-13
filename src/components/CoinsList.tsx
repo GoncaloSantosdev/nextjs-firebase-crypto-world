@@ -30,7 +30,7 @@ const CoinsList = ({ topCoins } : any) => {
                 <tr className='border-b'>
                     <th scope="col" className="px-6 py-3"></th>
                     <th scope="col" className="px-6 py-3">#</th>
-                    <th scope="col" className="px-6 py-3">Coin</th>
+                    <th scope="col" className="px-6 py-">Coin</th>
                     <th scope="col" className="px-6 py-3"></th>
                     <th scope="col" className="px-6 py-3">Price</th>
                     <th scope="col" className="px-6 py-3">24h</th>
