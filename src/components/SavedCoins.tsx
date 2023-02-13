@@ -24,7 +24,7 @@ const SavedCoins = () => {
 
    const removeCoin = async (passedId : any)  => {
         try{
-            const result = coins.filter((item) => item.id !== passedId)
+            const result = coins.filter((item : any) => item.id !== passedId)
             await updateDoc(path, {
                 watchList: result,
             })
